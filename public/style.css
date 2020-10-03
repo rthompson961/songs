@@ -1,0 +1,18 @@
+div.count {
+    background-color: #ff9933;
+    border-radius: 7px;
+    padding: 10px;
+}
+
+div.count table, div.count th, div.count td {
+    border: 1px solid #000;
+}
+
+div.count thead {
+    background-color: #0086b3;
+    color: #fff;
+}
+
+div.count tbody {
+    background-color: #fff;
+}

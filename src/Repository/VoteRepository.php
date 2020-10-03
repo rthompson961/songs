@@ -19,32 +19,31 @@ class VoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Vote::class);
     }
 
-    // /**
-    //  * @return Vote[] Returns an array of Vote objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findVotes()
     {
         return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
+            ->innerJoin('v.song', 's')
+            ->select('v.id')
+            ->addSelect('s.artist')
+            ->addSelect('s.title')
+            ->addSelect('v.quantity')
             ->orderBy('v.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Vote
+    public function findTotals()
     {
         return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
+            ->innerJoin('v.song', 's')
+            ->select('s.id')
+            ->addSelect('s.artist')
+            ->addSelect('SUM(v.quantity) AS count')
+            ->groupBy('s.id')
+            ->orderBy('count', 'DESC')
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
-    */
 }
