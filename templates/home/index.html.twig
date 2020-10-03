@@ -25,6 +25,12 @@
             {% endfor %}
             </tbody>
         </table>
+
+        {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
+            {{ form_widget(form.song) }}
+            {{ form_widget(form.quantity) }}
+            {{ form_widget(form.submit) }}
+        {{ form_end(form) }}
     </div>
 
     <div class="col-lg-5">
