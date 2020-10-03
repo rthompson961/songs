@@ -13,6 +13,7 @@
                     <th>Artist</th>
                     <th>Title</th>
                     <th>Quantity</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -21,6 +22,7 @@
                     <td>{{ vote.artist }}</td>
                     <td>{{ vote.title }}</td>
                     <td>{{ vote.quantity }}</td>
+                    <td><a href="{{ path('delete', {'vote' : vote.id }) }}"><span class="fa fa-trash-alt"></span></a></td>
                 </tr>
             {% endfor %}
             </tbody>

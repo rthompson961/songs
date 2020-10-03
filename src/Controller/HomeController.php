@@ -41,4 +41,17 @@ class HomeController extends AbstractController
             'form'  => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/delete/{vote}", name="delete", requirements={"vote"="\d+"})
+     */
+    public function delete(Vote $vote)
+    {
+        $manager = $this->getDoctrine()->getManager();
+
+        $manager->remove($vote);
+        $manager->flush();
+
+        return $this->redirectToRoute('home');
+    }
 }
