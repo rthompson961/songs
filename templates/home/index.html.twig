@@ -23,7 +23,11 @@
                     <td>{{ vote.title }}</td>
                     <td>{{ vote.quantity }}</td>
                     <td>
-                        <a href="{{ path('delete', {'vote' : vote.id }) }}" class="js-vote-delete">
+                        <a 
+                         href="{{ path('delete', {'vote' : vote.id }) }}" 
+                         class="js-vote-delete"
+                         data-url="{{ path('delete', {'vote' : vote.id }) }}"
+                         >
                             <span class="fa fa-trash-alt"></span>
                         </a>
                     </td>
