@@ -26,11 +26,15 @@
         {% block javascripts %}
         <script src="https://code.jquery.com/jquery-3.5.1.min.js" type></script>
         <script>
-            $(document).ready(function() {
-                var $voteTable = $('.js-vote-table tbody');
-                var $countTable = $('.js-count-table tbody');
+            var SongApp = {
+                initialize: function($table) {
+                    $table.find('.js-vote-delete').on(
+                        'click',
+                        this.deleteVote
+                    );
+                },
 
-                $voteTable.find('.js-vote-delete').on('click', function(e) {
+                deleteVote: function(e) {
                     e.preventDefault();
 
                     // change icon to red spinner
@@ -40,46 +44,56 @@
                         .addClass('fa-spinner')
                         .addClass('fa-spin');
 
-                    var $voteRow = $(this).closest('tr');
-                    var voteDeleteUrl = $(this).data('url');
-                    var voteSong = $(this).data('song');
-                    var voteQuantity = $(this).data('quantity');
-
-                    // count table values related to the current vote row
-                    var $countRow = $countTable.find('.js-count-row-' + voteSong);
-                    var $countCell = $countRow.children().last();
-                    var newCount = $countCell.html() - voteQuantity;
+                    var $row = $(this).closest('tr');
+                    var url = $(this).data('url');
+                    var song = $(this).data('song');
+                    var quantity = $(this).data('quantity');
 
                     $.ajax({
-                        url: voteDeleteUrl,
+                        url: url,
                         method: 'DELETE',
                         success: function() {
-                            // remove row from votes table
-                            $voteRow.fadeOut();
-
-                            // update vote total in count table
-                            // remove row if count is zero
-                            if (newCount == 0) {
-                                $countRow.fadeOut();
-                            } else {
-                                $countCell.html(newCount);
-                            } 
-
-                            var $countRows = $countTable.find('tr');
-
-                            // compare each count value to the row above it
-                            $countRows.sort(function(a, b) {
-                                return $(b).children().last().html() - $(a).children().last().html();
-                            });
-
-                            // update count table rows to new orders
-                            $.each($countRows, function(index, $row) {
-                                $countTable.append($row);
-                            });
+                            $row.fadeOut();
+                            SongApp.updateCount(song, quantity);
+                            SongApp.sortCount();
                         }
                     });
-                    
-                });
+                },
+
+                updateCount: function(id, quantity) {
+                    // count table row that contains the deleted vote
+                    var $row = $('.js-count-row-' + id);
+                    // cell that contains the count value
+                    var $cell = $row.children().last();
+                    // vote count minus the deleted votes
+                    var newCount = $cell.html() - quantity;
+
+                    // remove count row is zero votes or update the cell
+                    if (newCount == 0) {
+                        $row.fadeOut();
+                    } else {
+                        $cell.html(newCount);
+                    }
+                },
+
+                sortCount: function() {
+                    var $table = $('.js-count-table tbody');
+                    var $rows = $table.find('tr');
+
+                    // sort rows by count total in descending order
+                    $rows.sort(function(a, b) {
+                        return $(b).children().last().html() - $(a).children().last().html();
+                    });
+
+                    // update count table rows to updated order
+                    $.each($rows, function(index, $row) {
+                        $table.append($row);
+                    });
+                }
+            }
+
+            $(document).ready(function() {
+                SongApp.initialize($('.js-vote-table tbody'));
             });
         </script>
         {% endblock %}
