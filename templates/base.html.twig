@@ -27,37 +27,55 @@
         <script src="https://code.jquery.com/jquery-3.5.1.min.js" type></script>
         <script>
             $(document).ready(function() {
-                var $voteTable = $('.js-vote-table');
-                var $countTable = $('.js-count-table');
+                var $voteTable = $('.js-vote-table tbody');
+                var $countTable = $('.js-count-table tbody');
 
                 $voteTable.find('.js-vote-delete').on('click', function(e) {
                     e.preventDefault();
 
+                    // change icon to red spinner
                     $(this).addClass('text-danger');
-                    $(this).find('.fa')
+                    $(this).find('span')
                         .removeClass('fa-trash-alt')
                         .addClass('fa-spinner')
                         .addClass('fa-spin');
 
                     var $voteRow = $(this).closest('tr');
                     var voteDeleteUrl = $(this).data('url');
-                    var song = $(this).data('song');
-                    var quantity = $(this).data('quantity');
+                    var voteSong = $(this).data('song');
+                    var voteQuantity = $(this).data('quantity');
 
-                    var $countRow = $countTable.find('.js-count-row-' + song);
+                    // count table values related to the current vote row
+                    var $countRow = $countTable.find('.js-count-row-' + voteSong);
                     var $countCell = $countRow.children().last();
-                    var newCount = $countCell.html() - quantity;
+                    var newCount = $countCell.html() - voteQuantity;
 
                     $.ajax({
                         url: voteDeleteUrl,
                         method: 'DELETE',
                         success: function() {
+                            // remove row from votes table
                             $voteRow.fadeOut();
+
+                            // update vote total in count table
+                            // remove row if count is zero
                             if (newCount == 0) {
                                 $countRow.fadeOut();
                             } else {
-                                $countCell.html(newCount);                               
+                                $countCell.html(newCount);
                             } 
+
+                            var $countRows = $countTable.find('tr');
+
+                            // compare each count value to the row above it
+                            $countRows.sort(function(a, b) {
+                                return $(b).children().last().html() - $(a).children().last().html();
+                            });
+
+                            // update count table rows to new orders
+                            $.each($countRows, function(index, $row) {
+                                $countTable.append($row);
+                            });
                         }
                     });
                     
