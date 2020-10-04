@@ -26,6 +26,8 @@
                         <a 
                          href="{{ path('delete', {'vote' : vote.id }) }}" 
                          class="js-vote-delete"
+                         data-song="{{ vote.song }}"
+                         data-quantity="{{ vote.quantity }}"
                          data-url="{{ path('delete', {'vote' : vote.id }) }}"
                          >
                             <span class="fa fa-trash-alt"></span>
@@ -48,7 +50,7 @@
 
             <h2><span class="fas fa-headphones mr-3"></span>Count</h2>
 
-            <table class="table table-sm table-striped">
+            <table class="table table-sm table-striped js-count-table">
                 <thead>
                     <tr>
                         <th>Artist</th>
@@ -57,7 +59,7 @@
                 </thead>
                 <tbody>
                 {% for song in songs %}
-                    <tr>
+                    <tr class="js-count-row-{{ song.id }}">
                         <td>{{ song.artist }}</td>
                         <td>{{ song.count }}</td>
                     </tr>

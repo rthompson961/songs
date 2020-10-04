@@ -24,6 +24,7 @@ class VoteRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('v')
             ->innerJoin('v.song', 's')
             ->select('v.id')
+            ->addSelect('s.id AS song')
             ->addSelect('s.artist')
             ->addSelect('s.title')
             ->addSelect('v.quantity')

@@ -27,9 +27,10 @@
         <script src="https://code.jquery.com/jquery-3.5.1.min.js" type></script>
         <script>
             $(document).ready(function() {
-                var $table = $('.js-vote-table');
+                var $voteTable = $('.js-vote-table');
+                var $countTable = $('.js-count-table');
 
-                $table.find('.js-vote-delete').on('click', function(e) {
+                $voteTable.find('.js-vote-delete').on('click', function(e) {
                     e.preventDefault();
 
                     $(this).addClass('text-danger');
@@ -38,16 +39,28 @@
                         .addClass('fa-spinner')
                         .addClass('fa-spin');
 
-                    var deleteUrl = $(this).data('url');
-                    var $row = $(this).closest('tr');
+                    var $voteRow = $(this).closest('tr');
+                    var voteDeleteUrl = $(this).data('url');
+                    var song = $(this).data('song');
+                    var quantity = $(this).data('quantity');
+
+                    var $countRow = $countTable.find('.js-count-row-' + song);
+                    var $countCell = $countRow.children().last();
+                    var newCount = $countCell.html() - quantity;
 
                     $.ajax({
-                        url: deleteUrl,
+                        url: voteDeleteUrl,
                         method: 'DELETE',
                         success: function() {
-                            $row.fadeOut();
+                            $voteRow.fadeOut();
+                            if (newCount == 0) {
+                                $countRow.fadeOut();
+                            } else {
+                                $countCell.html(newCount);                               
+                            } 
                         }
                     });
+                    
                 });
             });
         </script>
