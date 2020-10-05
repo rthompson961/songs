@@ -30,7 +30,7 @@
                 initialize: function($table) {
                     $table.find('.js-vote-delete').on(
                         'click',
-                        this.deleteVote
+                        this.deleteVote.bind(this)
                     );
                 },
 
@@ -38,24 +38,21 @@
                     e.preventDefault();
 
                     // change icon to red spinner
-                    $(this).addClass('text-danger');
-                    $(this).find('span')
+                    var $link = $(e.currentTarget);
+                    $link.addClass('text-danger');
+                    $link.find('span')
                         .removeClass('fa-trash-alt')
                         .addClass('fa-spinner')
                         .addClass('fa-spin');
 
-                    var $row = $(this).closest('tr');
-                    var url = $(this).data('url');
-                    var song = $(this).data('song');
-                    var quantity = $(this).data('quantity');
-
                     $.ajax({
-                        url: url,
+                        url: $link.data('url'),
+                        context: this,
                         method: 'DELETE',
                         success: function() {
-                            $row.fadeOut();
-                            SongApp.updateCount(song, quantity);
-                            SongApp.sortCount();
+                            $link.closest('tr').fadeOut();
+                            this.updateCount($link.data('song'), $link.data('quantity'));
+                            this.sortCount();
                         }
                     });
                 },
@@ -68,7 +65,7 @@
                     // vote count minus the deleted votes
                     var newCount = $cell.html() - quantity;
 
-                    // remove count row is zero votes or update the cell
+                    // remove count row if zero votes or update the cell
                     if (newCount == 0) {
                         $row.fadeOut();
                     } else {
