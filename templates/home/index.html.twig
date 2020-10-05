@@ -18,31 +18,14 @@
             </thead>
             <tbody>
             {% for vote in votes %}
-                <tr>
-                    <td>{{ vote.artist }}</td>
-                    <td>{{ vote.title }}</td>
-                    <td>{{ vote.quantity }}</td>
-                    <td>
-                        <a 
-                         href="{{ path('delete', {'vote' : vote.id }) }}" 
-                         class="js-vote-delete"
-                         data-song="{{ vote.song }}"
-                         data-quantity="{{ vote.quantity }}"
-                         data-url="{{ path('delete', {'vote' : vote.id }) }}"
-                         >
-                            <span class="fa fa-trash-alt"></span>
-                        </a>
-                    </td>
-                </tr>
+                {{ include('home/voterow.html.twig') }}
             {% endfor %}
             </tbody>
         </table>
 
-        {{ form_start(form, {'attr': {'class': 'form-inline'}}) }}
-            {{ form_widget(form.song) }}
-            {{ form_widget(form.quantity) }}
-            {{ form_widget(form.submit) }}
-        {{ form_end(form) }}
+        <div class="js-new-vote-form-wrapper">
+            {{ include('home/form.html.twig') }}
+        </div>
     </div>
 
     <div class="col-lg-5">
@@ -59,9 +42,9 @@
                 </thead>
                 <tbody>
                 {% for song in songs %}
-                    <tr class="js-count-row-{{ song.id }}">
+                    <tr>
                         <td>{{ song.artist }}</td>
-                        <td>{{ song.count }}</td>
+                        <td class="js-count-cell-{{ song.id }}">{{ song.count }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

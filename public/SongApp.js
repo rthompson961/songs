@@ -5,55 +5,86 @@
         var vote = new Vote($wrapper);
     };
 
-    var Vote = function($table) {
-        $table.find('.js-vote-delete').on(
+    var Vote = function($wrapper) {
+        this.$wrapper = $wrapper;
+
+        this.$wrapper.find('.js-vote-delete').on(
             'click',
-            this.delete.bind(this)
+            this.deleteVote.bind(this)
+        );
+
+        this.$wrapper.find('.js-new-vote-form').on(
+            'submit',
+            this.addVote.bind(this)
         );
     };
 
     $.extend(Vote.prototype, {
-        delete: function(e) {
+        addVote: function(e) {
+            // do not submit form
+            e.preventDefault();
+
+            var $form = $(e.currentTarget);
+            var formData = $form.serializeArray();
+            var song = formData[0].value;
+            var quantity = formData[1].value;
+
+            var $table = this.$wrapper.find('.js-vote-table tbody');
+
+            $.ajax({
+                url: $form.attr('action'),
+                context: this,
+                method: 'POST',
+                data: $form.serialize(),
+                success: function(response) {
+                    // add row to votes table
+                    $table.append(response);
+
+                    // find count table cell containing the vote(s)
+                    var $cell = this.$wrapper.find('.js-count-cell-' + song);
+                    // update count cell to reflect new vote(s)
+                    var count = parseInt($cell.text()) + parseInt(quantity);
+                    $cell.text(count);
+
+                    this.sortCount();
+                },
+                error: function(jqXHR) {
+                    $form.closest('.js-new-vote-form-wrapper')
+                        .html(jqXHR.responseText);
+                }
+            });
+        },
+
+        deleteVote: function(e) {
+            // do not follow link
             e.preventDefault();
 
             // change icon to red spinner
             var $link = $(e.currentTarget);
             $link.addClass('text-danger');
-            $link.find('span')
-                .removeClass('fa-trash-alt')
-                .addClass('fa-spinner')
-                .addClass('fa-spin');
+            $link.find('span').removeClass('fa-trash-alt').addClass('fa-spinner fa-spin');
 
             $.ajax({
-                url: $link.data('url'),
+                url: $link.attr('href'),
                 context: this,
                 method: 'DELETE',
                 success: function() {
+                    // remove row from votes table
                     $link.closest('tr').fadeOut();
-                    this.updateCount($link.data('song'), $link.data('quantity'));
+
+                    // find count table cell containing the vote(s)
+                    var $cell = this.$wrapper.find('.js-count-cell-' + $link.data('song'));
+                    // update count cell to reflect deleted vote(s)
+                    var count = parseInt($cell.text()) - parseInt($link.data('quantity'));
+                    $cell.text(count);
+
                     this.sortCount();
                 }
             });
         },
 
-        updateCount: function(id, quantity) {
-            // count table row that contains the deleted vote
-            var $row = $('.js-count-row-' + id);
-            // cell that contains the count value
-            var $cell = $row.children().last();
-            // vote count minus the deleted votes
-            var newCount = $cell.html() - quantity;
-
-            // remove count row if zero votes or update the cell
-            if (newCount == 0) {
-                $row.fadeOut();
-            } else {
-                $cell.html(newCount);
-            }
-        },
-
         sortCount: function() {
-            var $table = $('.js-count-table tbody');
+            var $table = this.$wrapper.find('.js-count-table tbody');
             var $rows = $table.find('tr');
 
             // sort rows by count total in descending order

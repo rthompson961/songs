@@ -1,0 +1,15 @@
+<tr>
+    <td>{{ vote.song.artist }}</td>
+    <td>{{ vote.song.title }}</td>
+    <td>{{ vote.quantity }}</td>
+    <td>
+        <a 
+         href="{{ path('delete', {'vote' : vote.id }) }}" 
+         class="js-vote-delete"
+         data-song="{{ vote.song.id }}"
+         data-quantity="{{ vote.quantity }}"
+         >
+            <span class="fa fa-trash-alt"></span>
+        </a>
+    </td>
+</tr>

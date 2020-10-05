@@ -1,0 +1,5 @@
+{{ form_start(form, {'attr': {'class': 'form-inline js-new-vote-form', 'action' : path('home') } }) }}
+    {{ form_widget(form.song) }}
+    {{ form_widget(form.quantity) }}
+    {{ form_widget(form.submit) }}
+{{ form_end(form) }}

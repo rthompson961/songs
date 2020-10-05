@@ -28,6 +28,14 @@ class HomeController extends AbstractController
             $manager->persist($vote);
 
             $manager->flush();
+
+            if ($request->isXmlHttpRequest()) {
+                return $this->render('home/voterow.html.twig', [
+                    'vote' => $vote
+                ]);
+            }
+
+            return $this->redirectToRoute('home');
         }
 
         $repo = $this->getDoctrine()->getRepository(Vote::class);

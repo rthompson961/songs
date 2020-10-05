@@ -11,10 +11,7 @@ class SongFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $data = [
-            '2 Unlimited' => 'No Limit',
             'Babylon Zoo' => 'Spaceman',
-            'Jimmy Nail' => 'Crocodile Shoes',
-            'Pato Banton' => 'Baby Come Back',
             'Peter Andre' => 'Mysterious Girl',
             'PJ & Duncan' => 'Let\'s Get Ready To Rumble',
             'Rednex' => 'Cottoneye Joe',
