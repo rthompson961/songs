@@ -4,22 +4,17 @@
     window.SongApp = {
         initialize: function($wrapper) {
             var vote = new Vote($wrapper);
-            vote.initialize();
         }
     };
 
     var Vote = function($table) {
-        this.$table = $table;
+        $table.find('.js-vote-delete').on(
+            'click',
+            this.delete.bind(this)
+        );
     };
 
     $.extend(Vote.prototype, {
-        initialize: function() {
-            this.$table.find('.js-vote-delete').on(
-                'click',
-                this.delete.bind(this)
-            );
-        },
-
         delete: function(e) {
             e.preventDefault();
 
