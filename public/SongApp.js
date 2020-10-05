@@ -1,10 +1,8 @@
 (function(window, $) {
     'use strict';
 
-    window.SongApp = {
-        initialize: function($wrapper) {
-            var vote = new Vote($wrapper);
-        }
+    window.SongApp = function($wrapper) {
+        var vote = new Vote($wrapper);
     };
 
     var Vote = function($table) {
@@ -69,6 +67,5 @@
             });
         }
     });
-
 
 })(window, jQuery);

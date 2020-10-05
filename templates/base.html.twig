@@ -28,7 +28,7 @@
         <script src="{{ asset('SongApp.js') }}"></script>
         <script>
             $(document).ready(function() {
-                SongApp.initialize($('.js-vote-table tbody'));
+                var songApp = new SongApp($('.js-vote-table tbody'));
             });
         </script>
         {% endblock %}
