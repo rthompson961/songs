@@ -37,23 +37,21 @@
                 url: $form.attr('action'),
                 context: this,
                 method: 'POST',
-                data: $form.serialize(),
-                success: function(response) {
-                    // add row to votes table
-                    $table.append(response);
+                data: $form.serialize()
+            }).then(function(response) {
+                // add row to votes table
+                $table.append(response);
 
-                    // find count table cell containing the vote(s)
-                    var $cell = this.$wrapper.find('.js-count-cell-' + song);
-                    // update count cell to reflect new vote(s)
-                    var count = parseInt($cell.text()) + parseInt(quantity);
-                    $cell.text(count);
+                // find count table cell containing the vote(s)
+                var $cell = this.$wrapper.find('.js-count-cell-' + song);
+                // update count cell to reflect new vote(s)
+                var count = parseInt($cell.text()) + parseInt(quantity);
+                $cell.text(count);
 
-                    this.sortCount();
-                },
-                error: function(jqXHR) {
-                    $form.closest('.js-new-vote-form-wrapper')
-                        .html(jqXHR.responseText);
-                }
+                this.sortCount();
+            }).catch(function(jqXHR) {
+                $form.closest('.js-new-vote-form-wrapper')
+                    .html(jqXHR.responseText);
             });
         },
 
@@ -69,19 +67,18 @@
             $.ajax({
                 url: $link.attr('href'),
                 context: this,
-                method: 'DELETE',
-                success: function() {
-                    // remove row from votes table
-                    $link.closest('tr').fadeOut();
+                method: 'DELETE'
+            }).then(function() {
+                // remove row from votes table
+                $link.closest('tr').fadeOut();
 
-                    // find count table cell containing the vote(s)
-                    var $cell = this.$wrapper.find('.js-count-cell-' + $link.data('song'));
-                    // update count cell to reflect deleted vote(s)
-                    var count = parseInt($cell.text()) - parseInt($link.data('quantity'));
-                    $cell.text(count);
+                // find count table cell containing the vote(s)
+                var $cell = this.$wrapper.find('.js-count-cell-' + $link.data('song'));
+                // update count cell to reflect deleted vote(s)
+                var count = parseInt($cell.text()) - parseInt($link.data('quantity'));
+                $cell.text(count);
 
-                    this.sortCount();
-                }
+                this.sortCount();
             });
         },
 
