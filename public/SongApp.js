@@ -5,7 +5,7 @@
         var vote = new Vote($wrapper);
     };
 
-    var Vote = function($wrapper) {
+    let Vote = function($wrapper) {
         this.$wrapper = $wrapper;
 
         this.$wrapper.on(
@@ -26,12 +26,12 @@
             // do not submit form
             e.preventDefault();
 
-            var $form = $(e.currentTarget);
-            var formData = $form.serializeArray();
-            var song = formData[0].value;
-            var quantity = formData[1].value;
+            const $form = $(e.currentTarget);
+            const formData = $form.serializeArray();
+            const song = formData[0].value;
+            const quantity = formData[1].value;
 
-            var $table = this.$wrapper.find('.js-vote-table tbody');
+            const $table = this.$wrapper.find('.js-vote-table tbody');
 
             $.ajax({
                 url: $form.attr('action'),
@@ -42,9 +42,9 @@
                 $table.append(response);
 
                 // find count table cell containing the vote(s)
-                var $cell = this.$wrapper.find('.js-count-cell-' + song);
+                const $cell = this.$wrapper.find('.js-count-cell-' + song);
                 // update count cell to reflect new vote(s)
-                var count = parseInt($cell.text()) + parseInt(quantity);
+                const count = parseInt($cell.text()) + parseInt(quantity);
                 $cell.text(count);
 
                 this.sortCount();
@@ -59,7 +59,7 @@
             e.preventDefault();
 
             // change icon to red spinner
-            var $link = $(e.currentTarget);
+            const $link = $(e.currentTarget);
             $link.addClass('text-danger');
             $link.find('span').removeClass('fa-trash-alt').addClass('fa-spinner fa-spin');
 
@@ -71,9 +71,9 @@
                 $link.closest('tr').fadeOut();
 
                 // find count table cell containing the vote(s)
-                var $cell = this.$wrapper.find('.js-count-cell-' + $link.data('song'));
+                const $cell = this.$wrapper.find('.js-count-cell-' + $link.data('song'));
                 // update count cell to reflect deleted vote(s)
-                var count = parseInt($cell.text()) - parseInt($link.data('quantity'));
+                const count = parseInt($cell.text()) - parseInt($link.data('quantity'));
                 $cell.text(count);
 
                 this.sortCount();
@@ -81,8 +81,8 @@
         },
 
         sortCount: function() {
-            var $table = this.$wrapper.find('.js-count-table tbody');
-            var $rows = $table.find('tr');
+            const $table = this.$wrapper.find('.js-count-table tbody');
+            const $rows = $table.find('tr');
 
             // sort rows by count total in descending order
             $rows.sort((a, b) => {
