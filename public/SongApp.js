@@ -1,28 +1,30 @@
 (function(window, $) {
     'use strict';
 
-    window.SongApp = function($wrapper) {
-        var vote = new Vote($wrapper);
-    };
+    class SongApp {
+        constructor($wrapper) {
+            const vote = new Vote($wrapper);           
+        } 
+    }
 
-    let Vote = function($wrapper) {
-        this.$wrapper = $wrapper;
+    class Vote {
+        constructor($wrapper) {
+            this.$wrapper = $wrapper;
 
-        this.$wrapper.on(
-            'click',
-            '.js-vote-delete',
-            this.deleteVote.bind(this)
-        );
+            this.$wrapper.on(
+                'click',
+                '.js-vote-delete',
+                this.deleteVote.bind(this)
+            );
 
-        this.$wrapper.on(
-            'submit',
-            '.js-new-vote-form',
-            this.addVote.bind(this)
-        );
-    };
+            this.$wrapper.on(
+                'submit',
+                '.js-new-vote-form',
+                this.addVote.bind(this)
+            );
+        }
 
-    $.extend(Vote.prototype, {
-        addVote: function(e) {
+        addVote(e) {
             // do not submit form
             e.preventDefault();
 
@@ -52,9 +54,9 @@
                 $form.closest('.js-new-vote-form-wrapper')
                     .html(jqXHR.responseText);
             });
-        },
+        }
 
-        deleteVote: function(e) {
+        deleteVote(e) {
             // do not follow link
             e.preventDefault();
 
@@ -78,9 +80,9 @@
 
                 this.sortCount();
             });
-        },
+        }
 
-        sortCount: function() {
+        sortCount() {
             const $table = this.$wrapper.find('.js-count-table tbody');
             const $rows = $table.find('tr');
 
@@ -94,6 +96,7 @@
                 $table.append($row);
             });
         }
-    });
+    }
 
+    window.SongApp = SongApp;
 })(window, jQuery);
