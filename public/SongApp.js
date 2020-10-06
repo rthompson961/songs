@@ -8,13 +8,15 @@
     var Vote = function($wrapper) {
         this.$wrapper = $wrapper;
 
-        this.$wrapper.find('.js-vote-delete').on(
+        this.$wrapper.on(
             'click',
+            '.js-vote-delete',
             this.deleteVote.bind(this)
         );
 
-        this.$wrapper.find('.js-new-vote-form').on(
+        this.$wrapper.on(
             'submit',
+            '.js-new-vote-form',
             this.addVote.bind(this)
         );
     };
