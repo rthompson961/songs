@@ -35,10 +35,9 @@
 
             $.ajax({
                 url: $form.attr('action'),
-                context: this,
                 method: 'POST',
                 data: $form.serialize()
-            }).then(function(response) {
+            }).then((response) => {
                 // add row to votes table
                 $table.append(response);
 
@@ -49,7 +48,7 @@
                 $cell.text(count);
 
                 this.sortCount();
-            }).catch(function(jqXHR) {
+            }).catch((jqXHR) => {
                 $form.closest('.js-new-vote-form-wrapper')
                     .html(jqXHR.responseText);
             });
@@ -66,9 +65,8 @@
 
             $.ajax({
                 url: $link.attr('href'),
-                context: this,
                 method: 'DELETE'
-            }).then(function() {
+            }).then(() => {
                 // remove row from votes table
                 $link.closest('tr').fadeOut();
 
@@ -87,12 +85,12 @@
             var $rows = $table.find('tr');
 
             // sort rows by count total in descending order
-            $rows.sort(function(a, b) {
+            $rows.sort((a, b) => {
                 return $(b).children().last().html() - $(a).children().last().html();
             });
 
             // update count table rows to updated order
-            $.each($rows, function(index, $row) {
+            $.each($rows, (index, $row) => {
                 $table.append($row);
             });
         }
