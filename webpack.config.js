@@ -8,6 +8,17 @@ module.exports = {
         path: path.resolve(__dirname, 'public', 'build'),
         filename: 'song.js',
     },
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ]
+            }
+        ]
+    },
     plugins: [
         new webpack.ProvidePlugin({
             jQuery: 'jquery',
