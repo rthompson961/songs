@@ -1,6 +1,19 @@
 const path = require('path');
 const webpack = require('webpack');
 
+const styleLoader = {
+    loader: 'style-loader',
+    options: {
+        sourceMap: true
+    }
+};
+const cssLoader = {
+    loader: 'css-loader',
+    options: {
+        sourceMap: true
+    }
+};
+
 module.exports = {
     mode: 'development',
     entry: './public/song.js',
@@ -37,5 +50,6 @@ module.exports = {
             jQuery: 'jquery',
             $: 'jquery'
         })
-    ]
+    ],
+    devtool: 'inline-source-map'
 };
