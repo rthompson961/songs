@@ -1,8 +1,9 @@
 'use strict';
 
 const Vote = require('./SongVote');
+const $ = require('jquery');
 
-(function(window, $) {
+(function(window) {
     class SongApp {
         constructor($wrapper) {
             const vote = new Vote($wrapper);           
@@ -10,4 +11,4 @@ const Vote = require('./SongVote');
     }
 
     window.SongApp = SongApp;
-})(window, jQuery);
+})(window);
