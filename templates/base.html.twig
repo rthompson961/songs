@@ -26,11 +26,6 @@
         {% block javascripts %}
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="{{ asset('build/song.js') }}"></script>
-        <script>
-            $(document).ready(() => {
-                const songApp = new SongApp($('.container'));
-            });
-        </script>
         {% endblock %}
     </body>
 </html>
