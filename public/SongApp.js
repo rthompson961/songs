@@ -1,7 +1,7 @@
 'use strict';
 
-const Vote = require('./SongVote');
-const $ = require('jquery');
+import Vote from './SongVote';
+import $ from 'jquery';
 
 class SongApp {
     constructor($wrapper) {
@@ -9,4 +9,4 @@ class SongApp {
     }
 }
 
-module.exports = SongApp;
+export default SongApp;

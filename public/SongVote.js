@@ -91,4 +91,4 @@ class Vote {
     }
 }
 
-module.exports = Vote;
+export default Vote;
